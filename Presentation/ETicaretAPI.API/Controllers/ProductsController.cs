@@ -1,4 +1,5 @@
 ﻿using ETicaretAPI.Application.Repositories;
+using ETicaretAPI.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,7 +18,7 @@ namespace ETicaretAPI.API.Controllers
             _productWriteRepository = productWriteRepository;   
         }
         [HttpGet]
-        public async void Get()
+        public async Task Get()
         {
            await _productWriteRepository.AddRangeAsync(new()
             {
@@ -25,6 +26,12 @@ namespace ETicaretAPI.API.Controllers
                 new(){Id=Guid.NewGuid(),Name="Mouse",Price=500,Stock=20,CreateDate=DateTime.UtcNow}
             });
            var count= await _productWriteRepository.SaveAsync();
+        }
+        [HttpGet("id")]
+        public async Task<IActionResult> Get(string id)
+        {
+            Product product=await _productReadRepository.GetByIdAsync(id);
+            return Ok(product);
         }
     }
 }
