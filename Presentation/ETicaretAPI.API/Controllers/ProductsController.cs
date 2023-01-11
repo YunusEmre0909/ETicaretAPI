@@ -12,30 +12,27 @@ namespace ETicaretAPI.API.Controllers
         readonly private IProductWriteRepository _productWriteRepository;
         readonly private IProductReadRepository _productReadRepository;
 
-        public ProductsController(IProductReadRepository productReadRepository,IProductWriteRepository productWriteRepository)
+        readonly private IOrderWriteRepository _orderWriteRepository;
+        readonly private IOrderReadRepository _orderReadRepository;
+        readonly private ICustomerWriteRepository _customerWriteRepository;
+        readonly private ICustomerReadRepository _customerReadRepository;
+
+        public ProductsController(IProductReadRepository productReadRepository,IProductWriteRepository productWriteRepository, IOrderWriteRepository orderWriteRepository, ICustomerWriteRepository customerWriteRepository, IOrderReadRepository orderReadRepository, ICustomerReadRepository customerReadRepository)
         {
             _productReadRepository = productReadRepository;
-            _productWriteRepository = productWriteRepository;   
+            _productWriteRepository = productWriteRepository;
+            _orderWriteRepository = orderWriteRepository;
+            _customerWriteRepository = customerWriteRepository;
+            _orderReadRepository = _orderReadRepository;
+            _customerReadRepository = customerReadRepository;
         }
         [HttpGet]
         public async Task Get()
         {
-            /*
-           await _productWriteRepository.AddRangeAsync(new()
-            {
-                new(){Id=Guid.NewGuid(),Name="Laptop",Price=20000,Stock=20,CreateDate=DateTime.UtcNow},
-                new(){Id=Guid.NewGuid(),Name="Mouse",Price=500,Stock=20,CreateDate=DateTime.UtcNow}
-            });
-           var count= await _productWriteRepository.SaveAsync();*/
-           Product p= await _productReadRepository.GetByIdAsync("db635df0-5082-4240-a550-500db70f6312");
-            p.Name = "abcs";
-            await _productWriteRepository.SaveAsync();
+            Customer customer = await _customerReadRepository.GetByIdAsync("5118c00c-ab43-4e50-82df-fcbb8bac7984");
+            customer.Name = "yunus";
+            await _customerWriteRepository.SaveAsync();
         }
-        [HttpGet("id")]
-        public async Task<IActionResult> Get(string id)
-        {
-            Product product=await _productReadRepository.GetByIdAsync(id);
-            return Ok(product);
-        }
+      
     }
 }
