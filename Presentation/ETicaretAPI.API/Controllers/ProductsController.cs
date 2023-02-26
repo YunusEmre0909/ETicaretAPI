@@ -27,11 +27,11 @@ namespace ETicaretAPI.API.Controllers
             _customerReadRepository = customerReadRepository;
         }
         [HttpGet]
-        public async Task Get()
+        public async Task<IActionResult> Get()
         {
-            Customer customer = await _customerReadRepository.GetByIdAsync("5118c00c-ab43-4e50-82df-fcbb8bac7984");
-            customer.Name = "yunus";
-            await _customerWriteRepository.SaveAsync();
+            return Ok("Mehaba");
+            
+            
         }
       
     }
